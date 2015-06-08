@@ -32,40 +32,32 @@ public class Game {
     }
 
     private int calculateFrameScore(int frameIndex) {
-        int[] currentFrame = frames[frameIndex];
-        int throw1 = currentFrame[0];
-        int throw2 = currentFrame[1];
-        return throw1 + throw2 + calculateFrameBonus(frameIndex);
+        return throw1(frameIndex) + throw2(frameIndex) + bonus(frameIndex);
     }
 
-    private int calculateFrameBonus(int frameIndex) {
-        int[] currentFrame = frames[frameIndex];
-        int throw1 = currentFrame[0];
-        int throw2 = currentFrame[1];
+    private int bonus(int frameIndex) {
+        int throw1 = throw1(frameIndex);
+        int throw2 = throw2(frameIndex);
         if (isStrike(throw1)) {
-            return bonusForStrike(frameIndex);
+            return strikeBonus(frameIndex);
         } else if (isSpare(throw1, throw2)) {
-            return bonusForSpare(frameIndex);
+            return spareBonus(frameIndex);
         }
         return 0;
     }
 
-    private int bonusForSpare(int frameIndex) {
+    private int spareBonus(int frameIndex) {
         if (isLastFrame(frameIndex)) {
-            return frames[frameIndex][2];
-        } else {
-            int[] nextFrame = frames[frameIndex + 1];
-            return nextFrame[0];
+            return throw3(frameIndex);
         }
+        return throw1(frameIndex + 1);
     }
 
-    private int bonusForStrike(int frameIndex) {
+    private int strikeBonus(int frameIndex) {
         if (isLastFrame(frameIndex)) {
-            return frames[frameIndex][2];
-        } else {
-            int[] nextFrame = frames[frameIndex + 1];
-            return nextFrame[0] + nextFrame[1];
+            return throw3(frameIndex);
         }
+        return throw1(frameIndex + 1) + throw2(frameIndex + 1);
     }
 
     private boolean isLastFrame(int frameIndex) {
@@ -81,7 +73,24 @@ public class Game {
     }
 
     private boolean isFrameOver() {
-        return throwIndex == 2 && !(currentFrameIndex == 9);
+        return throwIndex == 2 && !isLastFrame(currentFrameIndex);
     }
+
+    private int throw1(int frameIndex) {
+        return getThrow(frameIndex, 0);
+    }
+
+    private int throw2(int frameIndex) {
+        return getThrow(frameIndex, 1);
+    }
+
+    private int throw3(int frameIndex) {
+        return getThrow(frameIndex, 2);
+    }
+
+    private int getThrow(int frameIndex, int throwIndex) {
+        return frames[frameIndex][throwIndex];
+    }
+
 
 }
