@@ -1,4 +1,4 @@
-package com.codehandson;
+package com.bowling;
 
 public class Game {
 

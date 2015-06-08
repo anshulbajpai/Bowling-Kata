@@ -1,4 +1,4 @@
-package com.codehandson;
+package com.bowling;
 
 import org.junit.Test;
 
